@@ -1,14 +1,14 @@
-﻿namespace DAL.Fundamentals.Repositories
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Data.Entity.Infrastructure;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using DAL.Fundamentals.Data;
-    using DAL.Fundamentals.Specifications;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
+using DAL.Fundamentals.Data;
+using DAL.Fundamentals.Specifications;
 
+namespace DAL.Fundamentals.Repositories
+{
     public abstract class RepositoryBase<TEntity> : SqlRepositoryBase, IRepository<TEntity>
         where TEntity : class
     {
@@ -48,6 +48,11 @@
             return count != 0;
         }
 
+        public int Count(ISpecification<TEntity> specification)
+        {
+            return efContext.Context.Set<TEntity>().Count(specification.GetExpression());
+        }
+
         public TEntity Get(ISpecification<TEntity> specification, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFind(specification, null, SortOrder.Unspecified, eagerLoadingProperties);
@@ -72,37 +77,37 @@
             return this.DoFindAll(new AnySpecification<TEntity>(), null, SortOrder.Unspecified, eagerLoadingProperties);
         }
 
-        public IList<TEntity> GetAll(System.Linq.Expressions.Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public IList<TEntity> GetAll(Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(new AnySpecification<TEntity>(), sortPredicate, sortOrder, eagerLoadingProperties);
         }
 
-        public IList<TEntity> GetAll(ISpecification<TEntity> specification, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public IList<TEntity> GetAll(ISpecification<TEntity> specification, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(specification, null, SortOrder.Unspecified, eagerLoadingProperties);
         }
 
-        public IList<TEntity> GetAll(ISpecification<TEntity> specification, System.Linq.Expressions.Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public IList<TEntity> GetAll(ISpecification<TEntity> specification, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(specification, sortPredicate, sortOrder, eagerLoadingProperties);
         }
 
-        public PagedResult<TEntity> GetPaged(int pageNumber, int pageSize, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public PagedResult<TEntity> GetPaged(int pageNumber, int pageSize, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(new AnySpecification<TEntity>(), null, SortOrder.Unspecified, pageNumber, pageSize, eagerLoadingProperties);
         }
 
-        public PagedResult<TEntity> GetPaged(Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public PagedResult<TEntity> GetPaged(Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(new AnySpecification<TEntity>(), sortPredicate, sortOrder, pageNumber, pageSize, eagerLoadingProperties);
         }
 
-        public PagedResult<TEntity> GetPaged(ISpecification<TEntity> specification, int pageNumber, int pageSize, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public PagedResult<TEntity> GetPaged(ISpecification<TEntity> specification, int pageNumber, int pageSize, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(specification, null, SortOrder.Unspecified, pageNumber, pageSize, eagerLoadingProperties);
         }
 
-        public PagedResult<TEntity> GetPaged(ISpecification<TEntity> specification, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize, params System.Linq.Expressions.Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
+        public PagedResult<TEntity> GetPaged(ISpecification<TEntity> specification, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize, params Expression<Func<TEntity, dynamic>>[] eagerLoadingProperties)
         {
             return this.DoFindAll(specification, sortPredicate, sortOrder, pageNumber, pageSize, eagerLoadingProperties);
         }
@@ -180,7 +185,7 @@
             }
             else
             {
-                throw new ArgumentException("Can't find the record  based on the specified query conditions.");
+                throw new ArgumentException("Can't find the record based on the specified query conditions.");
             }
             efContext.Commit();
         }
@@ -364,72 +369,5 @@
         }
 
         #endregion Private Methods
-    }
-
-    public abstract class SqlRepositoryBase : ISql
-    {
-        protected IRepositoryContext efContext;
-
-        public SqlRepositoryBase()
-        {
-        }
-
-        public SqlRepositoryBase(IRepositoryContext context)
-        {
-            this.efContext = context;
-        }
-
-        #region ISql Methods
-
-        public int ExecuteCommand(string sqlCommand, params object[] parameters)
-        {
-            return efContext.Context.Database.ExecuteSqlCommand(sqlCommand, parameters);
-        }
-
-        public IEnumerable<TEntity> ExecuteQuery<TEntity>(string sqlQuery, params object[] parameters)
-        {
-            return efContext.Context.Database.SqlQuery<TEntity>(sqlQuery, parameters);
-        }
-
-        public int ExecuteNonQueryWithTransaction(IEnumerable<ExecutionUnit> executionUnits)
-        {
-            int result;
-            var conn = this.efContext.Context.Database.Connection;
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
-            using (var transaction = conn.BeginTransaction())
-            {
-                try
-                {
-                    using (var command = conn.CreateCommand())
-                    {
-                        command.Transaction = transaction;
-                        command.CommandType = CommandType.StoredProcedure;
-                        foreach (var unit in executionUnits)
-                        {
-                            command.CommandText = unit.Name;
-                            command.Parameters.Clear();
-                            command.Parameters.AddRange(unit.Parameters);
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                    transaction.Commit();
-                    result = 1;
-                }
-                catch
-                {
-                    //Logger.Instance.Error("An error occurred when Execute NonQuery With Transaction.");
-                    transaction.Rollback();
-                    throw;
-                }
-                finally
-                {
-                    conn.Close();
-                }
-            }
-            return result;
-        }
-
-        #endregion ISql Methods
     }
 }

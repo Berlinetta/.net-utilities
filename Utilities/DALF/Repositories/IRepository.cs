@@ -90,6 +90,8 @@
         /// <returns>True if the aggregate root exists, otherwise false.</returns>
         bool Exists(ISpecification<TEntity> specification);
 
+        int Count(ISpecification<TEntity> specification);
+
         /// <summary>
         /// Removes the aggregate root from current repository.
         /// </summary>
