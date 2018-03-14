@@ -13,6 +13,7 @@ namespace EFTest
     public class PersonRepositoryTest
     {
         private PersonRepository pr = new PersonRepository(new RepositoryContext<MyDBContext>(new MyDBContext()));
+        private TeamRepository tr = new TeamRepository(new RepositoryContext<MyDBContext>(new MyDBContext()));
 
         [TestMethod]
         public void MyDBContextTest()
@@ -36,21 +37,25 @@ namespace EFTest
         [TestMethod]
         public void AddTest()
         {
-            var newId = Guid.NewGuid();
-            pr.Add(new Person() { Id = newId, Name = "toby1", Address = "shenzhen" });
+            var newTeamId = Guid.NewGuid();
+            tr.Add(new Team() { Id = newTeamId, Name = "MA" });
+            var newPersonId = Guid.NewGuid();
+            pr.Add(new Person() { Id = newPersonId, Name = "toby1", Address = "shenzhen", Age = "11", TeamId = newTeamId });
 
             using (var db = new MyDBContext())
             {
                 var query = from p in db.Persons
-                            where p.Id == newId
+                            where p.Id == newPersonId
                             select p;
                 var count = query.Count();
 
                 Assert.IsTrue(count == 1);
-                Assert.IsTrue(query.First().Id == newId);
+                Assert.IsTrue(query.First().Id == newPersonId);
             }
-            var es = new ExpressionSpecification<Person>(p => p.Id.Equals(newId));
+            var es = new ExpressionSpecification<Person>(p => p.Id.Equals(newPersonId));
             pr.RemoveAll(es);
+            var ts = new ExpressionSpecification<Team>(t => t.Id.Equals(newTeamId));
+            tr.RemoveAll(ts);
         }
 
         [TestMethod]
