@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4netUtility", "Log4netUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvUtility", "CsvUtility\CsvUtility.csproj", "{40BEC151-702A-42A0-8505-BDDF4B5882B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvUtilityTest", "CsvUtilityTest\CsvUtilityTest.csproj", "{FE8A86CD-E8E0-4860-809D-23275AF5F9ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{40BEC151-702A-42A0-8505-BDDF4B5882B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40BEC151-702A-42A0-8505-BDDF4B5882B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40BEC151-702A-42A0-8505-BDDF4B5882B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8A86CD-E8E0-4860-809D-23275AF5F9ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8A86CD-E8E0-4860-809D-23275AF5F9ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8A86CD-E8E0-4860-809D-23275AF5F9ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8A86CD-E8E0-4860-809D-23275AF5F9ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
