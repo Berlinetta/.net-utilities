@@ -62,28 +62,20 @@ namespace EFTest
         [Description("Function 'Get' test with param filter condition")]
         public void GetTest1()
         {
-            var newId = Guid.NewGuid();
-            pr.Add(new Person() { Id = newId, Name = "toby1", Address = "shenzhen" });
+            var newTeamId = Guid.NewGuid();
+            tr.Add(new Team() { Id = newTeamId, Name = "MA" });
+            var newPersonId = Guid.NewGuid();
+            pr.Add(new Person() { Id = newPersonId, Name = "toby1", Address = "shenzhen", Age = "11", TeamId = newTeamId });
 
             var con = new FilterCondition();
             var fs = new FilterSpecification<Person>(new List<FilterCondition>() {
-                new FilterCondition() {PropertyName = "Id", FilterOperate = FilterOperate.Equals, PropertyValues = new List<object> { newId } }
+                new FilterCondition() {PropertyName = "Id", FilterOperate = FilterOperate.Equals, PropertyValues = new List<object> { newPersonId } }
             });
             var person = pr.Get(fs);
-            Assert.IsTrue(person.Id == newId);
+            Assert.IsTrue(person.Id == newPersonId);
             pr.RemoveAll(fs);
-        }
-
-        [TestMethod]
-        [Description("Function 'Get' test with param filter condition")]
-        public void GetTest2()
-        {
-            var newId = Guid.NewGuid();
-            pr.Add(new Person() { Id = newId, Name = "toby1", Address = "shenzhen" });
-            var es = new ExpressionSpecification<Person>(p => p.Id.Equals(newId));
-            var person = pr.Get(es);
-            Assert.IsTrue(person.Id == newId);
-            pr.RemoveAll(es);
+            var ts = new ExpressionSpecification<Team>(t => t.Id.Equals(newTeamId));
+            tr.RemoveAll(ts);
         }
     }
 }
