@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFDemo", "EFDemo\EFDemo.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFTest", "EFTest\EFTest.csproj", "{73612394-DE0C-4C91-8F5B-49C5336F4775}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4netUtility", "Log4netUtility\Log4netUtility.csproj", "{066456DB-9396-44DD-9707-0CFA74934F24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{73612394-DE0C-4C91-8F5B-49C5336F4775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73612394-DE0C-4C91-8F5B-49C5336F4775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73612394-DE0C-4C91-8F5B-49C5336F4775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{066456DB-9396-44DD-9707-0CFA74934F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066456DB-9396-44DD-9707-0CFA74934F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066456DB-9396-44DD-9707-0CFA74934F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066456DB-9396-44DD-9707-0CFA74934F24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
