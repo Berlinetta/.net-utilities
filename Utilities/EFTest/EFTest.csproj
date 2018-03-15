@@ -65,9 +65,9 @@
     <Compile Include="TeamRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DALF\DALF.csproj">
+    <ProjectReference Include="..\DALUtility\DALUtility.csproj">
       <Project>{51da4f6c-7c10-4a77-8f81-bee9c3396fc1}</Project>
-      <Name>DALF</Name>
+      <Name>DALUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\EFDemo\EFDemo.csproj">
       <Project>{e5a7b37c-6ab4-4e84-a837-db761fbbb055}</Project>

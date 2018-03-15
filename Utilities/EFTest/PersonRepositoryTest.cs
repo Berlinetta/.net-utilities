@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EFDemo;
-using DAL.Fundamentals.Repositories;
-using DAL.Fundamentals.Specifications;
-using DAL.Fundamentals.Data;
+using DALUtility.Repositories;
+using DALUtility.Specifications;
+using DALUtility.Data;
 using System.Collections.Generic;
 
 namespace EFTest

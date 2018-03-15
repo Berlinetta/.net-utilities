@@ -1,4 +1,4 @@
-﻿using DAL.Fundamentals.Repositories;
+﻿using DALUtility.Repositories;
 using EFDemo;
 using System;
 using System.Collections.Generic;
